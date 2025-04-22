@@ -3,7 +3,7 @@ version: "3"
 services:
   mysql:
     container_name: mysqld
-    image: mysql:${MYSQL_VERSOIN}
+    image: mysql:${MYSQL_VERSION}
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD}
@@ -29,8 +29,8 @@ services:
     image: nginx:latest
     container_name: my-nginx
     ports:
-      - "80:80"
-      - "8080:8080"
+      - ${NGINX_PORT_1}:${NGINX_CONTAINER_PORT_1}
+      - ${NGINX_PORT_2}:${NGINX_CONTAINER_PORT_2}
     volumes:
       - ./nginx/conf:/etc/nginx/conf.d
       - ./nginx/html:/usr/share/nginx/html
@@ -50,16 +50,16 @@ services:
     environment:
       COLLECTOR_ZIPKIN_HOST_PORT: ":9411"
     ports:
-      - "6831:6831/udp"
-      - "6832:6832/udp"
-      - "5778:5778"
-      - "16686:16686"
-      - "4317:4317"
-      - "4318:4318"
-      - "14250:14250"
-      - "14268:14268"
-      - "14269:14269"
-      - "9411:9411"
+      - ${JAEGER_PORT_1}:${JAEGER_CONTAINER_PORT_1}/udp
+      - ${JAEGER_PORT_2}:${JAEGER_CONTAINER_PORT_2}/udp
+      - ${JAEGER_PORT_3}:${JAEGER_CONTAINER_PORT_3}
+      - ${JAEGER_PORT_4}:${JAEGER_CONTAINER_PORT_4}
+      - ${JAEGER_PORT_5}:${JAEGER_CONTAINER_PORT_5}
+      - ${JAEGER_PORT_6}:${JAEGER_CONTAINER_PORT_6}
+      - ${JAEGER_PORT_7}:${JAEGER_CONTAINER_PORT_7}
+      - ${JAEGER_PORT_8}:${JAEGER_CONTAINER_PORT_8}
+      - ${JAEGER_PORT_9}:${JAEGER_CONTAINER_PORT_9}
+      - ${JAEGER_PORT_10}:${JAEGER_CONTAINER_PORT_10}
 
   nsqlookupd:
     image: nsqio/nsq
@@ -68,8 +68,8 @@ services:
       - nsq-network
     hostname: nsqlookupd
     ports:
-      - "4161:4161"
-      - "4160:4160"
+      - ${NSQLOOKUPD_PORT_1}:${NSQLOOKUPD_CONTAINER_PORT_1}
+      - ${NSQLOOKUPD_PORT_2}:${NSQLOOKUPD_CONTAINER_PORT_2}
     volumes:
       - ./nsqlookupd.conf:/etc/nsqlookupd/nsqlookupd.conf
       - ./logs/lookupd_log:/logs/lookupd_log
@@ -82,8 +82,8 @@ services:
     networks:
       - nsq-network
     ports:
-      - "4151:4151"
-      - "4150:4150"
+      - ${NSQD_PORT_1}:${NSQD_CONTAINER_PORT_1}
+      - ${NSQD_PORT_2}:${NSQD_CONTAINER_PORT_2}
     volumes:
       - ./nsqd.conf:/etc/nsqd/nsqd.conf
       - ./data:/nsq-data
@@ -96,7 +96,7 @@ services:
       - nsqlookupd
     hostname: nsqadmin
     ports:
-      - "4171:4171"
+      - ${NSQADMIN_PORT}:${NSQADMIN_CONTAINER_PORT}
     networks:
       - nsq-network
 
